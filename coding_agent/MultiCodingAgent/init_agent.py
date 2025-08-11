@@ -10,10 +10,6 @@ import google
 from multiAgentTool import (
     convertAudioToText,
     textToAudio,
-    playAudioFile,
-    storePersonalUserInformation,
-    removePersonalUserInformation,
-    getuserPersonalInformation,
     runCommondInTerminal,
     generateImageFromPrompt
 )
@@ -32,10 +28,6 @@ class multiCodeAgent:
         # Register tools as FunctionTools
         self.convertAudioToText = FunctionTool(func=convertAudioToText)
         self.textToAudio = FunctionTool(func=textToAudio)
-        self.playAudioFile = FunctionTool(func=playAudioFile)
-        self.storePersonalUserInformation = FunctionTool(func=storePersonalUserInformation)
-        self.removePersonalUserInformation = FunctionTool(func=removePersonalUserInformation)
-        self.getuserPersonalInformation = FunctionTool(func=getuserPersonalInformation)
         self.runCommondInTerminal = FunctionTool(func=runCommondInTerminal)
         self.generateImageFromPrompt = FunctionTool(func=generateImageFromPrompt)
 
@@ -97,7 +89,7 @@ class multiCodeAgent:
                 temperature=0.2
             ),
             output_key='chat_history',
-            tools=[webSearchAgent, self.textToAudio, self.playAudioFile],
+            tools=[webSearchAgent, self.textToAudio],
             planner=google.adk.planners.BuiltInPlanner(
                 thinking_config=google.genai.types.ThinkingConfig(
                     includeThoughts=True,
