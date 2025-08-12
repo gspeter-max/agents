@@ -1,4 +1,4 @@
-def description(self, role: str) -> str:
+def description(role: str) -> str:
         """
         Returns a detailed description for the given agent role.
         """

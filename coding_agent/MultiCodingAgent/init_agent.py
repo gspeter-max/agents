@@ -2,6 +2,7 @@ from google.adk.agents import LlmAgent
 from google.genai import types
 from google.adk.sessions import InMemorySessionService
 from google.adk import Runner
+from agentDescription import description
 from google.adk.tools import google_search, FunctionTool, AgentTool
 import asyncio
 import google
@@ -24,7 +25,7 @@ class multiCodeAgent:
       - Image generation from prompts
     """
 
-    def __init__(self, agentType: str = 'parallel'):
+    def __init__(self, description = description ):
         # Register tools as FunctionTools
         self.convertAudioToText = FunctionTool(func=convertAudioToText)
         self.textToAudio = FunctionTool(func=textToAudio)
@@ -32,7 +33,8 @@ class multiCodeAgent:
         self.generateImageFromPrompt = FunctionTool(func=generateImageFromPrompt)
 
         # Create agents and runner
-        self.rootAgent = self.getLlmAgent(agentType=agentType)
+        self.description = description 
+        self.rootAgent = self.getLlmAgent()
         self.agentSession = InMemorySessionService()
         self.runner = Runner(
             app_name='multiAgent',
@@ -41,11 +43,11 @@ class multiCodeAgent:
         )
 
     
-    def getLlmAgent(self, agentType: str):
+    def getLlmAgent(self):
         # Web search agent
         webSearchAgent = AgentTool(agent=LlmAgent(
             name='webSearchAgent',
-            description=self.description(role='webSearchAgent'),
+            description= self.description(role='webSearchAgent'),
             model='gemini-2.5-flash',
             generate_content_config=types.GenerateContentConfig(
                 temperature=0.2
@@ -55,7 +57,7 @@ class multiCodeAgent:
             planner=google.adk.planners.BuiltInPlanner(
                 thinking_config=google.genai.types.ThinkingConfig(
                     includeThoughts=True,
-                    thinkingBudget=2000
+                    thinkingBudget=22000
                 )
             )
         ))
@@ -63,7 +65,7 @@ class multiCodeAgent:
         # Code execution agent
         codeExecutionAgent = AgentTool(agent=LlmAgent(
             name='codeExecutionAgent',
-            description=self.description(role='code_execution_agent'),
+            description= self.description(role='code_execution_agent'),
             model='gemini-2.5-flash',
             generate_content_config=types.GenerateContentConfig(
                 temperature=0.2
@@ -75,7 +77,7 @@ class multiCodeAgent:
             planner=google.adk.planners.BuiltInPlanner(
                 thinking_config=google.genai.types.ThinkingConfig(
                     includeThoughts=True,
-                    thinkingBudget=2000
+                    thinkingBudget=22000
                 )
             )
         ))
@@ -83,7 +85,7 @@ class multiCodeAgent:
         # Storytelling & audio agent
         storeTellingAudioAgent = LlmAgent(
             name='storeTellingAudioAgent',
-            description=self.description(role='storeTellingAudioAgent'),
+            description= self.description(role='storeTellingAudioAgent'),
             model='gemini-2.5-flash',
             generate_content_config=types.GenerateContentConfig(
                 temperature=0.2
@@ -93,7 +95,7 @@ class multiCodeAgent:
             planner=google.adk.planners.BuiltInPlanner(
                 thinking_config=google.genai.types.ThinkingConfig(
                     includeThoughts=True,
-                    thinkingBudget=2000
+                    thinkingBudget=22000
                 )
             )
         )
@@ -101,7 +103,7 @@ class multiCodeAgent:
         # Code generation agent
         codeGenerateAgent = LlmAgent(
             name='codeGenerateAgent',
-            description=self.description(role='codeGenerateAgent'),
+            description= self.description(role='codeGenerateAgent'),
             model='gemini-2.5-flash',
             generate_content_config=types.GenerateContentConfig(
                 temperature=0.6
@@ -110,7 +112,7 @@ class multiCodeAgent:
             planner=google.adk.planners.BuiltInPlanner(
                 thinking_config=google.genai.types.ThinkingConfig(
                     includeThoughts=True,
-                    thinkingBudget=2000
+                    thinkingBudget=22000
                 )
             ),
             output_key='GoogleSearchToolResult'
@@ -119,7 +121,7 @@ class multiCodeAgent:
         # Image generation agent
         generateImagesAgent = LlmAgent(
             name='generateImagesAgent',
-            description=self.description(role='generateImagesAgent'),
+            description= self.description(role='generateImagesAgent'),
             model='gemini-2.5-flash',
             generate_content_config=types.GenerateContentConfig(
                 temperature=0.6
@@ -128,7 +130,7 @@ class multiCodeAgent:
             planner=google.adk.planners.BuiltInPlanner(
                 thinking_config=google.genai.types.ThinkingConfig(
                     includeThoughts=True,
-                    thinkingBudget=2000
+                    thinkingBudget=22000
                 )
             ),
             output_key='GoogleSearchToolResult'
@@ -173,6 +175,4 @@ class multiCodeAgent:
                     print(part.text)
 
 
-# Example usage:
-# agents = multiCodeAgent()
-# await agents.getResponse('hey  ')
+
