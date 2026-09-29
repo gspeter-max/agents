@@ -1,0 +1,11 @@
+
+from langgraph import * 
+
+
+
+def func(state : stateGraph , runtime : Runtime)
+state = stategraph(class_state)
+state.add_node() 
+state.add_edge()
+
+
