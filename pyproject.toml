@@ -7,7 +7,12 @@ authors = [
     { name = "pankaj kumar", email = "gspeter@gmail.com" }
 ]
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "langgraph>=1.2.12",
+    "langchain>=1.4.3",
+    "langchain-core>=1.6.5",
+    "pydantic>=2.7.4",
+]
 
 [project.scripts]
 agents = "agents:main"
@@ -15,3 +20,12 @@ agents = "agents:main"
 [build-system]
 requires = ["uv_build>=0.12.18,<0.13.0"]
 build-backend = "uv_build"
+
+[tool.black]
+line-length = 48
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+
+
